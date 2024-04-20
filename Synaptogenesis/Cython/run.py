@@ -8,11 +8,12 @@ import pygame as py
 import math
 import random
 from voxel_class import Voxel
-import voxel_render
+from voxel_render import *
+#import voxel_render
 
 
 # Data for the graph
-base_graph = 2 # Width, length, and height in voxels. 
+base_graph = 6 # Width, length, and height in voxels. 
 resolution = base_graph**3 # How many voxel square total the graph is made from.
 color = [.5, .5, 1]
 voxel_array = np.empty((base_graph, base_graph, base_graph), dtype=object)
@@ -22,8 +23,10 @@ render_stack = set()
 for z in range(base_graph):
     for y in range(base_graph):
         for x in range(base_graph):
-            voxel_array[x, y, z] = Voxel(x, y, z, 1, color, base_graph)
-            if voxel_array[x, y, z] == 1: render_stack.add(voxel_array[x, y, z].ID)
+            voxel_array[x, y, z] = Voxel(x, y, z, random.randint(0, 1), color, base_graph)
+            print(voxel_array[x, y, z])
+            if voxel_array[x, y, z].render == 1:
+                render_stack.add((x, y, z))
 print(voxel_array)
 
 
@@ -102,13 +105,14 @@ def main():
     py.init()
     display = (800, 600)
     py.display.set_mode(display, DOUBLEBUF|OPENGL)
-    light_position = [20, 1, 3, 1] # [R, G, B, directional/orthographic]
+    light_position = [20, 0, 0, 1] # [R, G, B, directional/orthographic]
     init(light_position) # Enable lighting
     
     # FOV, display distortion, near clipping, far clipping.
-    gluPerspective(90, (display[0]/display[1]), 0.1, 256.0)
+    gluPerspective(100, (display[0]/display[1]), 0.1, 256.0)
     
-    glTranslatef(4, -4.0, -10) # Moves voxel in relration to the camera. 
+     # Moves voxel in relration to the camera. 
+    glTranslatef(-(base_graph/2), -(base_graph/2), -(base_graph*2)) # Centers voxels, 
     
     # Set the object's color
     #glColor3fv((1,0,0))
@@ -120,13 +124,14 @@ def main():
                 quit()
         glLightfv(GL_LIGHT0, GL_POSITION, light_position)
 
-        #glRotatef(1, 1, 1, 1)  # Optional: Rotate the voxel for better visualization
+        glRotatef(0, 0, 0, 90)  # Optional: Rotate the voxel for better visualization
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
         # Draw the voxel at position (0, 0, 0)
         #draw_voxel(0, 0, 0)
+        print("Render Start.")
         for v in render_stack:
-            voxel_render(voxel_array[v[0], v[1], v[2]])
+            render_voxel(voxel_array[v[0], v[1], v[2]])
         
         py.display.flip()
         py.time.wait(10)

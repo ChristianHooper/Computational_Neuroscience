@@ -1,9 +1,11 @@
 # cython: language_level=3
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+
 from cpython cimport array
 import array
 import numpy as np
 cimport numpy as np
-from voxel_class import Voxel
+
 # Define no deprecated API before including NumPy headers
 cdef extern from "numpy/arrayobject.h":
     pass
@@ -19,9 +21,9 @@ from OpenGL.GLU import gluPerspective
 
 
 
-
+'''
 # faces[i*4 + j]
-cdef int faces[24]
+cdef list faces
 faces = [
     0, 1, 2, 3, # Front face
     3, 7, 6, 2, # Left face
@@ -31,7 +33,8 @@ faces = [
     4, 7, 3, 0 # Bottom face
     ]
 
-cdef int normals[18] 
+
+cdef list normals
 normals = [
     0, 0, 1,  # Front face
     0, 0, -1,   # Back face
@@ -40,6 +43,7 @@ normals = [
     0, 1, 0,  # Bottom face
     0, -1, 0    # Top face
     ]
+'''
 
 
 
@@ -59,35 +63,41 @@ normals = [
 '''
 
 cpdef render_voxel(voxel):
+    print("[Render Method]")
+    
+    # faces[i*4 + j]
+    cdef list faces
+    faces = [
+        0, 1, 2, 3, # Front face
+        3, 7, 6, 2, # Left face
+        2, 6, 5, 1, # Top Face
+        1, 0, 4, 5, # Right face
+        5, 6, 7, 4, # Back face
+        4, 7, 3, 0 # Bottom face
+        ]
+
+
+    cdef list normals
+    normals = [
+        0, 0, 1,  # Front face
+        0, 0, -1,   # Back face
+        1, 0, 0,   # Right faces
+        -1, 0, 0,  # Left face
+        0, 1, 0,  # Bottom face
+        0, -1, 0    # Top face
+        ]
+
     glMaterialfv(GL_FRONT, GL_SPECULAR, (.1, .1, .1, 1))    # Specular color
     #glMaterialfv(GL_FRONT, GL_SHININESS,10)                 # Adjust shininess for sharper or softer highlights
     
-    glBegin(GL_QUADS) # Draws quads from the vertices 
+    print(voxel.vertex_data)
+
+    glBegin(GL_QUADS)
     for i in range(6):
-        glColor3fv(voxel.color)  # Now affects material properties for lighting
-        glNormal3fv(normals[i*3: i*3+3: 1]) # Sets the normals for each face
-        for vertex in face[i*4: i*4+4: 1]:
-            glVertex3fv(voxel.vertices[vertex])
+        glColor3fv(voxel.color)
+        glNormal3fv(normals[i*3: i*3+3: 1])
+        for j in faces[i*4: i*4+4: 1]:
+            glVertex3fv(voxel.vertex_data[j])
     glEnd()
 
-    '''
-    REMAKE RENDERING LOOP
     
-    glBegin(GL_QUADS) # Draws quads from the vertices 
-    for i, face in enumerate(faces): #  index, item, list 
-        glColor3fv(voxel.color)  # Now affects material properties for lighting
-        glNormal3fv(normals[i])  # Set normal for each face
-        for vertex in face:
-            glVertex3fv(vertices[vertex])
-    glEnd()
-
-
-
-    glBegin(GL_QUADS) # Draws quads from the vertices 
-    for i, face in enumerate(faces):
-        glColor3fv(whole_color)  # Now affects material properties for lighting
-        glNormal3fv(normals[i])  # Set normal for each face
-        for vertex in face:
-            glVertex3fv(vertices[vertex])
-    glEnd()
-    '''
