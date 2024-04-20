@@ -13,7 +13,7 @@ from voxel_render import *
 
 
 # Data for the graph
-base_graph = 6 # Width, length, and height in voxels. 
+base_graph = 20 # Width, length, and height in voxels. 
 resolution = base_graph**3 # How many voxel square total the graph is made from.
 color = [.5, .5, 1]
 voxel_array = np.empty((base_graph, base_graph, base_graph), dtype=object)
@@ -23,7 +23,7 @@ render_stack = set()
 for z in range(base_graph):
     for y in range(base_graph):
         for x in range(base_graph):
-            voxel_array[x, y, z] = Voxel(x, y, z, random.randint(0, 1), color, base_graph)
+            voxel_array[x, y, z] = Voxel(x, y, z, random.randint(0, 6), color, base_graph)
             print(voxel_array[x, y, z])
             if voxel_array[x, y, z].render == 1:
                 render_stack.add((x, y, z))
@@ -88,7 +88,7 @@ def draw_voxel(x, y, z):
 
     # Set material properties
     #glMaterialfv(GL_FRONT, GL_DIFFUSE, (.5, .5, 1, 1))  # Diffuse color
-    glMaterialfv(GL_FRONT, GL_SPECULAR, (.1, .1, .1, 1))       # Specular color
+    #glMaterialfv(GL_FRONT, GL_SPECULAR, (.1, .1, .1, 1))       # Specular color
     #glMaterialfv(GL_FRONT, GL_SHININESS,10)                 # Adjust shininess for sharper or softer highlights
     #glMaterialfv(GL_FRONT, GL_AMBIENT, (.4, .4, .4, 1))  # Soft ambient light
     
@@ -103,16 +103,27 @@ def draw_voxel(x, y, z):
 
 def main():
     py.init()
-    display = (800, 600)
+    display = (800, 800)
     py.display.set_mode(display, DOUBLEBUF|OPENGL)
-    light_position = [20, 0, 0, 1] # [R, G, B, directional/orthographic]
+    light_position = [0, 0, base_graph**4, 1] # [R, G, B, directional/orthographic]
     init(light_position) # Enable lighting
     
     # FOV, display distortion, near clipping, far clipping.
-    gluPerspective(100, (display[0]/display[1]), 0.1, 256.0)
+    #gluPerspective(100, (display[0]/display[1]), 0.1, 256.0)
     
-     # Moves voxel in relration to the camera. 
-    glTranslatef(-(base_graph/2), -(base_graph/2), -(base_graph*2)) # Centers voxels, 
+    # Set up orthographic projection
+    aspect_ratio = display[0] / display[1]
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    # (Left, Right, Bottom, Top, zNear, zFar)
+    glOrtho(-base_graph * aspect_ratio, base_graph * aspect_ratio, -base_graph, base_graph, -base_graph*2, base_graph**2)
+    glMatrixMode(GL_MODELVIEW)
+    glLoadIdentity()
+
+    # Moves voxel in relration to the camera. 
+    glTranslatef(0, -base_graph//10, -(base_graph)) # Centers voxels
+    glRotatef(45, 1, 0, 0)  # Rotate around x-axis to look downwards
+    glRotatef(45, 0, 0, 1)  # Rotate around z-axis to view from a corner 
     
     # Set the object's color
     #glColor3fv((1,0,0))
@@ -132,9 +143,18 @@ def main():
         print("Render Start.")
         for v in render_stack:
             render_voxel(voxel_array[v[0], v[1], v[2]])
-        
+        render_stack.clear()
+
+        for x in range(base_graph):
+            for y in range(base_graph):
+                for z in range(base_graph):
+                    v = voxel_array[x, y, z]
+                    v.render = random.randint(0, 2)
+                    if v.render == 1:
+                        render_stack.add((x, y, z))
+                
         py.display.flip()
-        py.time.wait(10)
+        py.time.wait(200)
 
 
 
