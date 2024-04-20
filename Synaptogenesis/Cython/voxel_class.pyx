@@ -27,8 +27,8 @@ cdef class Voxel:
         self._render = render
         self._color_array = np.array(color, dtype = np.float32) # Color values (ndim=One-dimension)
         self.vertices
-        calculate_vertices()
-        self.ID = calculate_id()
+        self.calculate_vertices()
+        self.ID = self.calculate_id()
 
      # Provides direct, mutable access to the np array (Getter & Setter)
     @property # Returns a memory view of the np array, refrencing it instead of copying it. 
@@ -39,28 +39,28 @@ cdef class Voxel:
     @x.setter # X-axis setter
     def x(self, new_x): 
         self._x = new_x
-        calculate_vertices()
+        self.calculate_vertices()
 
     @property # Y-axis getter
     def y(self): return self._y
     @y.setter # Y-axis setter
     def y(self, new_y): 
         self._y = new_y
-        calculate_vertices()
+        self.calculate_vertices()
 
     @property # Z-axis getter
     def z(self): return self._z
     @z.setter # Z-axis setter
     def z(self, new_z): 
         self._z = new_z
-        calculate_vertices()
+        self.calculate_vertices()
 
     @property # Gets render state
     def render(self): return self._render
     @render.setter # Sets render (1=render | 0=non-render)
     def render(self, if_render): self._render = if_render
 
-    cpdef calculate_vertices():   # Define vertice location in world space
+    cpdef calculate_vertices(self):   # Define vertice location in world space
         self.vertices = (
         (1 + self._x, -1 + self._y, 1 + self._z),   # 0 Front Bottom Right
         (1 + self._x, 1 + self._y, 1 + self._z),    # 1 Front Top Right
@@ -73,6 +73,6 @@ cdef class Voxel:
         (-1 + self._x, -1 + self._y, -1 + self._z), # 7 Back Bottom Left
         )
 
-    cpdef calculate_id(): # Intial ID calcuation holds the place at which the voxel was generated in relation to the other voxels.
+    cpdef calculate_id(self): # Intial ID calcuation holds the place at which the voxel was generated in relation to the other voxels.
         return [self._x, self._y, self._z]
         #(self._x + (self._y*self.base) + (self._z*self.base))

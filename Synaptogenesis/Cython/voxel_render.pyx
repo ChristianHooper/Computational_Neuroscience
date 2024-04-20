@@ -16,6 +16,10 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import gluPerspective
 
+
+
+
+
 # faces[i*4 + j]
 cdef int faces[24]
 faces = [
@@ -38,6 +42,8 @@ normals = [
     ]
 
 
+
+
 '''
     vertices = (
     (1 + x, -1 + y, 1 + z),   # 0 Front Bottom Right
@@ -53,18 +59,35 @@ normals = [
 '''
 
 cpdef render_voxel(voxel):
-     glMaterialfv(GL_FRONT, GL_SPECULAR, (.1, .1, .1, 1))    # Specular color
+    glMaterialfv(GL_FRONT, GL_SPECULAR, (.1, .1, .1, 1))    # Specular color
     #glMaterialfv(GL_FRONT, GL_SHININESS,10)                 # Adjust shininess for sharper or softer highlights
     
-    
+    glBegin(GL_QUADS) # Draws quads from the vertices 
+    for i in range(6):
+        glColor3fv(voxel.color)  # Now affects material properties for lighting
+        glNormal3fv(normals[i*3: i*3+3: 1]) # Sets the normals for each face
+        for vertex in face[i*4: i*4+4: 1]:
+            glVertex3fv(voxel.vertices[vertex])
+    glEnd()
+
     '''
     REMAKE RENDERING LOOP
-    '''
+    
     glBegin(GL_QUADS) # Draws quads from the vertices 
-    for i, face in enumerate(faces):
+    for i, face in enumerate(faces): #  index, item, list 
         glColor3fv(voxel.color)  # Now affects material properties for lighting
-        glNormal3fv(normals[(i*i)+i, (i*i)+i+1, (i*i)+i+2])  # Set normal for each face
+        glNormal3fv(normals[i])  # Set normal for each face
         for vertex in face:
             glVertex3fv(vertices[vertex])
     glEnd()
 
+
+
+    glBegin(GL_QUADS) # Draws quads from the vertices 
+    for i, face in enumerate(faces):
+        glColor3fv(whole_color)  # Now affects material properties for lighting
+        glNormal3fv(normals[i])  # Set normal for each face
+        for vertex in face:
+            glVertex3fv(vertices[vertex])
+    glEnd()
+    '''
