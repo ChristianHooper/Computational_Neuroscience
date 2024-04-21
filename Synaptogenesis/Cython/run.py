@@ -47,48 +47,6 @@ def init(light_position):
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE) # Links glColor3fv to ambient and diffuse material properties.
     glShadeModel(GL_SMOOTH) # Enables smooth shading
 
-
-def draw_voxel(x, y, z):
-    # Define vertice location in world space
-    vertices = (
-    (1 + x, -1 + y, 1 + z),   # 0 Front Bottom Right
-    (1 + x, 1 + y, 1 + z),    # 1 Front Top Right
-    (-1 + x, 1 + y, 1 + z),   # 2 Front Top Left
-    (-1 + x, -1 + y, 1 + z),  # 3 Front Bottom Left
-    
-    (1 + x, -1 + y, -1 + z),  # 4 Back Bottom Right  
-    (1 + x, 1 + y, -1 + z),   # 5 Back Top Right     
-    (-1 + x, 1 + y, -1 + z),  # 6 Back Top Left
-    (-1 + x, -1 + y, -1 + z), # 7 Back Bottom Left
-    )
-    
-    # Defines single vertices quads render from. (Front, Left, Top, Right, Back, Bottom)
-    faces = (
-    (0, 1, 2, 3), # Front face
-    (3, 7, 6, 2), # Left face
-    (2, 6, 5, 1), # Top Face
-    (1, 0, 4, 5), # Right face
-    (5, 6, 7, 4), # Back face
-    (4, 7, 3, 0)  # Bottom face
-    )
-    
-    normals = [
-    (0, 0, 1),  # Front face
-    (0, 0, -1), # Back face
-    (1, 0, 0),  # Right faces
-    (-1, 0, 0), # Left face
-    (0, 1, 0),  # Bottom face
-    (0, -1, 0)  # Top face
-    ]
-    
-    glBegin(GL_QUADS) # Draws quads from the vertices 
-    for i, face in enumerate(faces):
-        glColor3fv(whole_color)  # color assignment
-        glNormal3fv(normals[i])  # Sets normals
-        for vertex in face:
-            glVertex3fv(vertices[vertex]) # Draws quad
-    glEnd()
-
 def main():
     py.init()
     display = (800, 800)
