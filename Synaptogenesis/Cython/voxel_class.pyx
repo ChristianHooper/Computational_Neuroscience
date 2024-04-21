@@ -9,31 +9,28 @@ cimport numpy as np
 cdef extern from "numpy/arrayobject.h":
     pass
 
-np.import_array()  # This must be called to complete initialization
+np.import_array()
 
-
-
-
+# Creates a voxel object for rendering (Struct next time)
 cdef class Voxel:
-    cdef int _x, _y, _z # Voxel position for rendering.
-    cdef int _render # If the voxel should render.
-    cdef int base # If the voxel should render.
-    cdef np.ndarray _color_array# Initializes np color array.
-    cdef float[:] color_view # Initializes memory view for np array.
+    cdef int _x, _y, _z # Voxel position for rendering
+    cdef int _render # If the voxel should render
+    cdef int base # If the voxel should render
+    cdef np.ndarray _color_array# Initializes np color array
+    cdef float[:] color_view # Initializes memory view for np array
     cdef list _vertex_data
     cdef list ID
 
     def __init__(self, int x, int y, int z, int render, list color, int base):
-        self._x = x
-        self._y = y
-        self._z = z
-        self.base = base
-        self._render = render
-        self._color_array = np.array(color, dtype = np.float32) # Color values (ndim=One-dimension)
-        self._vertex_data
-        self.calculate_vertices()
-        self.ID = [self._x, self._y, self._z]
-        print(self.ID)
+        self._x = x # x-axis global position
+        self._y = y # y-axis global position
+        self._z = z # z-axis global position
+        self.base = base # Value graph is based on (base^3)
+        self._render = render # If the voxel is rendered
+        self._color_array = np.array(color, dtype = np.float32) # Array for color assignment
+        self._vertex_data # The data for voxel vertices
+        self.calculate_vertices() # Calculates global vertices
+        self.ID = [self._x, self._y, self._z] # Id for the voxel
 
      # Provides direct, mutable access to the np array (Getter & Setter)
     @property # Returns a memory view of the np array, refrencing it instead of copying it. 

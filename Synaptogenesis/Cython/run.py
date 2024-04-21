@@ -13,11 +13,12 @@ from voxel_render import *
 
 
 # Data for the graph
-base_graph = 20 # Width, length, and height in voxels. 
-resolution = base_graph**3 # How many voxel square total the graph is made from.
+base_graph = 25 # Width, length, and height in voxels. 
+resolution = base_graph**3 # How many voxels total the graph is made from.
 color = [.5, .5, 1]
 voxel_array = np.empty((base_graph, base_graph, base_graph), dtype=object)
 render_stack = set()
+py.display.set_caption('[Basic Voxel Graph]')
 
 # Intializes Voxel Graph 
 for z in range(base_graph):
@@ -30,24 +31,21 @@ for z in range(base_graph):
 print(voxel_array)
 
 
-
-
-
 def init(light_position):
-    glEnable(GL_LIGHTING)  # Enable lighting
-    glEnable(GL_LIGHT0)    # Enable light #0
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0) # Enable light 
 
     # Set light parameters
     glLightfv(GL_LIGHT0, GL_POSITION, light_position)
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, (.2, .2, .2, 1))  # Color of light (White)
-    #glLightfv(GL_LIGHT0, GL_SPECULAR, (0.2, 0.2, 0.2, 1))  # White specular light
-    glLightfv(GL_LIGHT0, GL_AMBIENT, (.5, .5, .5, 1))  # Soft ambient light
-    glEnable(GL_DEPTH_TEST)  # Enable depth testing
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, (.2, .2, .2, 1)) # Light color (white)
+    # glLightfv(GL_LIGHT0, GL_SPECULAR, (0.2, 0.2, 0.2, 1)) # White specular light
+    glLightfv(GL_LIGHT0, GL_AMBIENT, (.5, .5, .5, 1))
+    glEnable(GL_DEPTH_TEST) # Enable depth testing
     
     
-    glEnable(GL_COLOR_MATERIAL)  # Enable color material
-    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE)  # Link glColor3fv to ambient and diffuse material properties
-    glShadeModel(GL_SMOOTH) 
+    glEnable(GL_COLOR_MATERIAL) # Enable color material
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE) # Links glColor3fv to ambient and diffuse material properties.
+    glShadeModel(GL_SMOOTH) # Enables smooth shading
 
 
 def draw_voxel(x, y, z):
@@ -82,23 +80,13 @@ def draw_voxel(x, y, z):
     (0, 1, 0),  # Bottom face
     (0, -1, 0)  # Top face
     ]
-
-    whole_color = (0.8, 0.8, 1)
-    
-
-    # Set material properties
-    #glMaterialfv(GL_FRONT, GL_DIFFUSE, (.5, .5, 1, 1))  # Diffuse color
-    #glMaterialfv(GL_FRONT, GL_SPECULAR, (.1, .1, .1, 1))       # Specular color
-    #glMaterialfv(GL_FRONT, GL_SHININESS,10)                 # Adjust shininess for sharper or softer highlights
-    #glMaterialfv(GL_FRONT, GL_AMBIENT, (.4, .4, .4, 1))  # Soft ambient light
-    
     
     glBegin(GL_QUADS) # Draws quads from the vertices 
     for i, face in enumerate(faces):
-        glColor3fv(whole_color)  # Now affects material properties for lighting
-        glNormal3fv(normals[i])  # Set normal for each face
+        glColor3fv(whole_color)  # color assignment
+        glNormal3fv(normals[i])  # Sets normals
         for vertex in face:
-            glVertex3fv(vertices[vertex])
+            glVertex3fv(vertices[vertex]) # Draws quad
     glEnd()
 
 def main():
@@ -108,60 +96,52 @@ def main():
     light_position = [0, 0, base_graph**4, 1] # [R, G, B, directional/orthographic]
     init(light_position) # Enable lighting
     
-    # FOV, display distortion, near clipping, far clipping.
-    #gluPerspective(100, (display[0]/display[1]), 0.1, 256.0)
-    
-    # Set up orthographic projection
+
+    # Orthographic projection
     aspect_ratio = display[0] / display[1]
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    # (Left, Right, Bottom, Top, zNear, zFar)
+
+    # (Left, Right, Bottom, Top, zNear, zFar) 
     glOrtho(-base_graph * aspect_ratio, base_graph * aspect_ratio, -base_graph, base_graph, -base_graph*2, base_graph**2)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
 
     # Moves voxel in relration to the camera. 
     glTranslatef(0, -base_graph//10, -(base_graph)) # Centers voxels
-    glRotatef(45, 1, 0, 0)  # Rotate around x-axis to look downwards
-    glRotatef(45, 0, 0, 1)  # Rotate around z-axis to view from a corner 
-    
-    # Set the object's color
-    #glColor3fv((1,0,0))
+    glRotatef(45, 1, 0, 0)  # Rotate around x-axis to look downwards.
+    glRotatef(45, 0, 0, 1)  # Rotate around z-axis to view from a corner.
     
     while True:
         for event in py.event.get():
             if event.type == py.QUIT:
                 py.quit()
                 quit()
-        glLightfv(GL_LIGHT0, GL_POSITION, light_position)
-
-        glRotatef(0, 0, 0, 90)  # Optional: Rotate the voxel for better visualization
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glLightfv(GL_LIGHT0, GL_POSITION, light_position) # Sets lighting
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) # Clear render buffer
+        #glRotatef(10, 0, 0, 90)  # Moving rotation
         
         # Draw the voxel at position (0, 0, 0)
-        #draw_voxel(0, 0, 0)
-        print("Render Start.")
+
+        #print("Render Start.")
         for v in render_stack:
             render_voxel(voxel_array[v[0], v[1], v[2]])
         render_stack.clear()
 
+        # Reassigns voxels to render randomly every cycle.
         for x in range(base_graph):
             for y in range(base_graph):
                 for z in range(base_graph):
                     v = voxel_array[x, y, z]
-                    v.render = random.randint(0, 2)
+                    v.render = random.randint(0, 3)
                     if v.render == 1:
                         render_stack.add((x, y, z))
                 
         py.display.flip()
         py.time.wait(200)
 
-
-
-# Functions
+# Get clock rate
 def get_time(): return py.time.get_ticks()
-
-
 
 if __name__ == "__main__":
     main()
