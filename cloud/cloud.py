@@ -8,7 +8,7 @@ def main():
         return
 
     # Creates window
-    window = glfw.create_window(1000, 1000, "Draw a Transparent Pixel", None, None)
+    window = glfw.create_window(1000, 1000 , "Draw a Transparent Pixel", None, None)
     if not window:
         glfw.terminate()
         return
@@ -34,7 +34,7 @@ def main():
         glColor4f(1.0, 1.0, 1.0, 0.5)  # 50% transparency
 
         # Draw one pixel
-        glPointSize(1)  # Make it bigger to see the effect clearly
+        glPointSize(10)  # Make it bigger to see the effect clearly
         glBegin(GL_POINTS)
         glVertex2f(0.0, 0.0)  # Coordinates of the pixel
         glEnd()

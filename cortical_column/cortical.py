@@ -17,15 +17,15 @@ Road Map
 '''
 
 if __name__ == "__main__":
-    
+
     cortical_column = Cortical_Column() # Declares cortical column
-    x_depth, y_depth, z_depth = 12, 12, 12 # X, Y, & Z depths.
+    x_depth, y_depth, z_depth = 23, 23, 23 # X, Y, & Z depths.
 
     for z in range(z_depth):
         for y in range(y_depth):
             for x in range(x_depth):
                 cortical_column.add_neuron(x, y, z) # Initializes the cortical column.
-    
+
     for n in cortical_column.neurons: # Initializes dendrites
         print(n.generation_id, ":", end=" ")
         for number in range(random.randint(1, 6)): # Defines number of generated dendrite 1-6.
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     window_y = 100 * x_depth
     window_size = (window_x, window_y)
     pygame.display.set_caption("Cortical Column")
-    
+
     window = pygame.display.set_mode(window_size)
     transparent_surface = pygame.Surface(window_size, pygame.SRCALPHA)
 
