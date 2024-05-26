@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 tmax = 10; # Max time
 dt = .1;  # Time step
-tau = 1 # Rate of decay
+tau = .1 # Rate of decay
 
 X = np.zeros(tmax*int(1/dt)) # Total number of time steps. (Default 10)
 a = np.array ([1, 2, 8])/dt # Create an array of 3 values divided by the time step.
