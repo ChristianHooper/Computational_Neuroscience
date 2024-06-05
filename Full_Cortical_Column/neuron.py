@@ -5,10 +5,11 @@ import numpy
 
 
 class Neuron():
-    def __init__(self, x_pos, y_pos, z_pos):
-        self.x = x_pos
-        self.y = y_pos
-        self.z = z_pos
+    def __init__(self, position):
+        self.position_id = position
+        self.x = position[0]
+        self.y = position[1]
+        self.z = position[2]
 
 
         # elf.dt = delta_time # Hundredth of a second delta_time base, only has one step to deal with peak gamma wave.
