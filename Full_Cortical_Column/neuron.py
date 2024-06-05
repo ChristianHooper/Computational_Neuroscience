@@ -1,20 +1,23 @@
 import time
-
-dt = .001 # Hundredth of a second delta_time base, only has one step to deal with peak gamma wave.
-
-start_time = time.time()
-
-# Wave frequencies for neural oscillations.
-wave_frequencies = {'delta':(.5,4),
-                    'theta': (4, 8),
-                    'alpha': (8, 12),
-                    'beta': (12, 30),
-                    'gamma': (30, 100)}
-
-time.sleep(2.5)
-
-current_time = time.time() - start_time
+import random
+import numpy
 
 
 
-print(current_time)
+class Neuron():
+    def __init__(self, x_pos, y_pos, z_pos):
+        self.x = x_pos
+        self.y = y_pos
+        self.z = z_pos
+
+
+        # elf.dt = delta_time # Hundredth of a second delta_time base, only has one step to deal with peak gamma wave.
+        # self.tau = tau # Rate of decay
+
+
+
+
+
+# Get the measurement of time between the input time and the time when called.
+def get_time(input_time): return (time.time() - input_time)
+
