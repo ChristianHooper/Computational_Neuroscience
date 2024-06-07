@@ -13,17 +13,17 @@ layers = {'width': (50),
         'iv': (600, 1000),
         'v':  (1000, 1400),
         'vi': (1400, 1600)}
-
-neural_type = {1: ['interneurons'],
-        2: ['stellate', 'small_pyramidal'],
-        3: ['pyramidal', 'interneurons'],
-        4: ['stellate', 'granule'],
-        5: ['large_pyramidal', 'martinotti'],
-        6: ['fusiform', 'pyramidal', 'interneurons']
-        }
-
-# Multiplicative layer weight bais i-iv
+# Multiplicative layer weight bias i-iv (adds up to one, can do integers)
 layer_bias = [0.05, 0.10, 0.2, 0.3, 0.2, 0.15]
+
+# Neural types and their multiplicative bias weighting for generation selection
+neural_type = {'i': [['interneurons'], [1]],
+        'ii': [['stellate', 'small_pyramidal'], [1, 3]],
+        'iii': [['pyramidal', 'interneurons'], [4, 1]],
+        'iv': [['stellate', 'granule'], [1, 2]],
+        'v': [['large_pyramidal', 'martinotti'], [3, 1]],
+        'vi': [['fusiform', 'pyramidal', 'interneurons'], [2, 3, 1]]
+        }
 
 base_colors = {'i': (.60, .60, .60),
         'ii': (.60, .60, .90),

@@ -8,14 +8,16 @@ class Neuron(Space):
     def __init__(self, position, id, generation_number, layer):
         super().__init__()
         self.exists = 1
-        self.id = id # String id for dictionarty lookup (controler/position_dictionary)
+        self.id = id # Tuple id for neurons position (controler/position_dictionary)
         self.layer = layer # Dictionary key for layer value
         self.generation_number = generation_number # Birth order value for batch.
         self.x = position[0]
         self.y = position[1]
         self.z = position[2]
+        # Selecte type of neuron based upon layer and bais (layer, bais weight) pulling from list
+        self.type = random.choices(sv.neural_type[self.layer][0], sv.neural_type[self.layer][1])[0]
         self.color = self.depth_color()
-        
+    
         #self.color = sv.normalization(self.y, )
 
         # elf.dt = delta_time # Hundredth of a second delta_time base, only has one step to deal with peak gamma wave.

@@ -5,13 +5,13 @@ from OpenGL.GL import *
 
 '''
 [ROAD MAP]
-1. Add neuronal types to neurons
 2. Axon generation and behavior
 3. Dendrite generation & behavoiur
 4. Cell type behavoius specificity
 5. Soma neural functionaility
 6. Neurite cell functionaily (growth/puning)
 
+Data input, how, what?  
 
 Time steps?? Hertz influence, but local in calucations
 '''
@@ -62,7 +62,7 @@ def main():
             
             # Applies Neuron color
             glColor3f(*neuron.color)
-            
+            print(neuron.type)
             # Draws neurons position in cortical column with fliped x & y (x=depth)
             glVertex2f(norm(neuron.id[2], depth, 0), norm(neuron.id[0], width, 0))
         
