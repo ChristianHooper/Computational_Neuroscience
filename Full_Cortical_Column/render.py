@@ -1,3 +1,4 @@
+import time
 import glfw
 import system_variables as sv
 import controller as ct
@@ -65,14 +66,24 @@ def main():
             #print(neuron.type)
             # Draws neurons position in cortical column with fliped x & y (x=depth)
             glVertex2f(norm(neuron.id[2], depth, 0), norm(neuron.id[0], width, 0))
-            neuron.axon.axonogenesis() # Grows one new neural segment
-            print(neuron.axon.length_array)
+             # Grows one new neural segment
+            #print(neuron.axon.length_array)
 
             #print(norm(neuron.id[0], width), norm(neuron.id[2], depth))
             #glVertex2f(neuron.id[1], neuron.id[2])
-
-        
         glEnd()
+
+        glBegin(GL_LINES)
+        for neuron in ct.position_dictionary.values():
+            axon = neuron.axon
+            axon.axonogenesis()
+            glColor3f(0.5, 0.5, 1.0)
+
+            # NEEDS to draw each segment of the axon in the length array START HERE
+            #glVertex2f(norm(axon.length_array[axon.axon_head][2], depth, 0)/10,
+            #norm(axon.length_array[axon.axon_head][0], width, 0)/10)
+        glEnd()
+
         time.sleep(.5)
 
         

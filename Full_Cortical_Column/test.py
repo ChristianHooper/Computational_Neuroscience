@@ -4,5 +4,6 @@ num_list = (1, 2, 3, 4)
 
 str_list = ['i', 'o', 'u', 'y']
 
+print(len(num_list))
 
 

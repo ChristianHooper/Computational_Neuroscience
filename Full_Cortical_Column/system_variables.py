@@ -27,14 +27,14 @@ neural_type = {'i': [['interneurons'], [1]],
         'vi': [['fusiform', 'pyramidal', 'interneurons'], [2, 3, 1]]
         }
 
-# Multiplicative directional search bais for axonal growth based upon layer posision
+# Multiplicative directional search bias for axonal growth based upon layer position
 search_bias = { # [X+, X-, Y+, Y-, Z+, Z-]
-        'descending': np.array([0.1, 0.1, 0.1, 0.1, 0.1, 0.5]), # 0.5 to stay in 'i', 0.5 to generate into a deeper layer
-        'ascending': np.array([.08, .08, .08, .08, .6, .08]),
-        'local': np.array([0.2, 0.2, 0.2, 0.2, 0.1, 0.1]),
-        'local_ascending': np.array([0.1, 0.1, 0.1, 0.1, 0.4, 0.2]),
-        'local_descending': np.array([0.1, 0.1, 0.1, 0.1, 0.2, 0.4]),
-        'stagnate': np.array([0.1, 0.1, 0.1, 0.1, 0.3, 0.3])
+        'descending': [0.1, 0.1, 0.1, 0.1, 0.1, 0.5], # 0.5 to stay in 'i', 0.5 to generate into a deeper layer
+        'ascending': [.08, .08, .08, .08, .6, .08],
+        'local': [0.2, 0.2, 0.2, 0.2, 0.1, 0.1],
+        'local_ascending':[0.1, 0.1, 0.1, 0.1, 0.4, 0.2],
+        'local_descending':[0.1, 0.1, 0.1, 0.1, 0.2, 0.4],
+        'stagnate': [0.1, 0.1, 0.1, 0.1, 0.3, 0.3]
         }
 
 genesis_change = np.array([ # [Middle layer, Top, Bottom] [X+, X-, Y+, Y-, Z+, Z-]
