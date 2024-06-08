@@ -1,3 +1,5 @@
+import numpy as np
+
 # Wave frequencies for neural oscillations.
 wave_frequencies = {'delta':(.5,4),
                     'theta': (4, 8),
@@ -25,6 +27,42 @@ neural_type = {'i': [['interneurons'], [1]],
         'vi': [['fusiform', 'pyramidal', 'interneurons'], [2, 3, 1]]
         }
 
+# Multiplicative directional search bais for axonal growth based upon layer posision
+search_bias = { # [X+, X-, Y+, Y-, Z+, Z-]
+        'descending': np.array([0.1, 0.1, 0.1, 0.1, 0.1, 0.5]), # 0.5 to stay in 'i', 0.5 to generate into a deeper layer
+        'ascending': np.array([.08, .08, .08, .08, .6, .08]),
+        'local': np.array([0.2, 0.2, 0.2, 0.2, 0.1, 0.1]),
+        'local_ascending': np.array([0.1, 0.1, 0.1, 0.1, 0.4, 0.2]),
+        'local_descending': np.array([0.1, 0.1, 0.1, 0.1, 0.2, 0.4]),
+        'stagnate': np.array([0.1, 0.1, 0.1, 0.1, 0.3, 0.3])
+        }
+
+genesis_change = np.array([ # [Middle layer, Top, Bottom] [X+, X-, Y+, Y-, Z+, Z-]
+        [
+        [1,0,0], [1,1,0] # (X+, Y+) right side
+        ],
+        [
+        [-1,0,0], [-1,-1,0] # (X-, Y-) Leftside
+        ],
+        [
+        [0,1,0], [-1,1,0] # (Y+, X-) Rightsight
+        ],
+        [
+        [0,-1,0], [1,-1,0] # (Y-, X+) Backside
+        ],
+        [
+        [1,1,1], [1,0,1], [1,-1,1], # Z+,X+ Ascending (corner/front, middle, corner)
+        [1,0,1],[0,0,1],[-1,0,1], # (middle/front, middle, back)
+        [-1,1,1],[-1,0,1],[-1,-1,1], #Z+,X-(front/corner, middle, back corner)
+        ],
+        [
+        [1,1,-1], [1,0,-1], [1,-1,-1], # Z+,X+ Ascending (corner/front, middle, corner)
+        [1,0,-1],[0,0,-1],[-1,0,-1], # (middle/front, middle, back)
+        [-1,1,-1],[-1,0,-1],[-1,-1,-1], #Z+,X-(front/corner, middle, back corner)
+        ]
+        ], dtype=object)
+
+
 base_colors = {'i': (.60, .60, .60),
         'ii': (.60, .60, .90),
         'iii':(.60, .90, .60),
@@ -33,7 +71,7 @@ base_colors = {'i': (.60, .60, .60),
         'vi': (.90, .60, .90)
         }
 
-total_neurons = 512
+total_neurons = 128
 
 morpho_space = (layers['width'],layers['width'], layers['vi'][1]) # X, Y & Z morphological dimensions
 

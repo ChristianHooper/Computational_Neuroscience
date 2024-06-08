@@ -2,6 +2,7 @@ import time
 import random
 import numpy
 from space import Space
+from axon import Axon
 import system_variables as sv
 
 class Neuron(Space):
@@ -17,7 +18,7 @@ class Neuron(Space):
         # Selecte type of neuron based upon layer and bais (layer, bais weight) pulling from list
         self.type = random.choices(sv.neural_type[self.layer][0], sv.neural_type[self.layer][1])[0]
         self.color = self.depth_color()
-    
+        self.axon = Axon(self.id, self.layer, self.type)
         #self.color = sv.normalization(self.y, )
 
         # elf.dt = delta_time # Hundredth of a second delta_time base, only has one step to deal with peak gamma wave.
@@ -31,7 +32,7 @@ class Neuron(Space):
         post_color = tuple(y * y_offset +0.1 for y in pre_color)
         # Calculates multipler for y-axis depth, lower number the deeper
         # y_multiplier = tuple(sv.normalization(self.y, 0, 50) * x for x in pre_color)
-        print(post_color)
+        #print(post_color)
         return post_color
 
 

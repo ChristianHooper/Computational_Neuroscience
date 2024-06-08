@@ -5,7 +5,7 @@ from OpenGL.GL import *
 
 '''
 [ROAD MAP]
-2. Axon generation and behavior
+2. Axon generation and behavior (Need to add spacial replacement in morphospace array)
 3. Dendrite generation & behavoiur
 4. Cell type behavoius specificity
 5. Soma neural functionaility
@@ -62,15 +62,19 @@ def main():
             
             # Applies Neuron color
             glColor3f(*neuron.color)
-            print(neuron.type)
+            #print(neuron.type)
             # Draws neurons position in cortical column with fliped x & y (x=depth)
             glVertex2f(norm(neuron.id[2], depth, 0), norm(neuron.id[0], width, 0))
-        
+            neuron.axon.axonogenesis() # Grows one new neural segment
+            print(neuron.axon.length_array)
+
             #print(norm(neuron.id[0], width), norm(neuron.id[2], depth))
             #glVertex2f(neuron.id[1], neuron.id[2])
 
         
         glEnd()
+        time.sleep(.5)
+
         
         
         
