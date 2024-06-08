@@ -56,7 +56,7 @@ def initialize():
     # Sorts neurons based upon their y-depth for proper color rendering
     # position_dictionary = OrderedDict(sorted(position_dictionary.items(), key=position_dictionary.values.y))
 
-    print("[Controller Initialized]")
+print("[Controller Initialized]")
 
 if __name__ == "__main__":
     initialize()

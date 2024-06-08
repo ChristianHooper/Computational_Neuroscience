@@ -6,6 +6,3 @@ str_list = ['i', 'o', 'u', 'y']
 
 
 
-length_array = np.zeros((1000, 3), dtype=int)
-
-print(length_array)
