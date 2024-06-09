@@ -42,10 +42,10 @@ genesis_change = np.array([ # [Middle layer, Top, Bottom] [X+, X-, Y+, Y-, Z+, Z
         [1,0,0], [1,1,0] # (X+, Y+) right side
         ],
         [
-        [-1,0,0], [-1,-1,0] # (X-, Y-) Leftside
+        [-1,0,0], [-1,-1,0] # (X-, Y-) Left
         ],
         [
-        [0,1,0], [-1,1,0] # (Y+, X-) Rightsight
+        [0,1,0], [-1,1,0] # (Y+, X-) Right
         ],
         [
         [0,-1,0], [1,-1,0] # (Y-, X+) Backside
@@ -71,7 +71,7 @@ base_colors = {'i': (.60, .60, .60),
         'vi': (.90, .60, .90)
         }
 
-total_neurons = 128
+total_neurons = 512
 
 morpho_space = (layers['width'],layers['width'], layers['vi'][1]) # X, Y & Z morphological dimensions
 

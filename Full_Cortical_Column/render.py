@@ -6,7 +6,7 @@ from OpenGL.GL import *
 
 '''
 [ROAD MAP]
-2. Axon generation and behavior (Need to add spacial replacement in morphospace array)
+2. (Need to add spacial replacement in morphospace array for axon segments )
 3. Dendrite generation & behavoiur
 4. Cell type behavoius specificity
 5. Soma neural functionaility
@@ -48,6 +48,13 @@ def main():
     # Sets base color to black
     glClearColor(0.0, 0.0, 0.0, 1.0)
 
+    # Enable blending and set the blending function before entering the drawing loop
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
+    # Ensure depth testing is disabled if transparency doesn't work properly with depth testing
+    glDisable(GL_DEPTH_TEST)
+
     ct.initialize() # Generates neurons, dedrite, axons in the morphological space
 
 
@@ -73,29 +80,31 @@ def main():
             #glVertex2f(neuron.id[1], neuron.id[2])
         glEnd()
 
-        glBegin(GL_LINES)
+        
+        
         for neuron in ct.position_dictionary.values():
             axon = neuron.axon
             axon.axonogenesis()
-            glColor3f(0.5, 0.5, 1.0)
-
+            
+            
+            glColor4f(1.0, 0.5, 0.5, 0.4)
+            glBegin(GL_LINES)
+            for section in range(axon.axon_head): # Get the current number of segments in axon
+                
+                location = axon.length_array[section] # Gets axons segment location
+                #location[0:+3]
+                glVertex2f(norm(location[2], depth, 0), norm(location[0], width, 0)) # (x, y)
+            glEnd()
             # NEEDS to draw each segment of the axon in the length array START HERE
             #glVertex2f(norm(axon.length_array[axon.axon_head][2], depth, 0)/10,
             #norm(axon.length_array[axon.axon_head][0], width, 0)/10)
-        glEnd()
-
-        time.sleep(.5)
-
         
-        
-        
-
         # Swap front and back buffers
         glfw.swap_buffers(window)
 
         # Poll for and process events
         glfw.poll_events()
-
+        time.sleep(.2)
     glfw.terminate()
 
 if __name__ == "__main__":
