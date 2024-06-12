@@ -12,7 +12,7 @@ from OpenGL.GL import *
 5. Soma neural functionaility
 6. Neurite cell functionaily (growth/puning)
 
-Data input, how, what?  
+Data input, how, what?
 
 Time steps?? Hertz influence, but local in calucations
 '''
@@ -61,13 +61,13 @@ def main():
     # Loop until the user closes the window
     while not glfw.window_should_close(window):
         glClear(GL_COLOR_BUFFER_BIT) # Clear screen
-        
+
         glPointSize(3) # Sets the size of the point when drawn
         glColor3f(1.0, 1.0, 1.0) # Sets color of pixel
 
         glBegin(GL_POINTS) # Starts render
         for neuron in ct.position_dictionary.values():
-            
+
             # Applies Neuron color
             glColor3f(*neuron.color)
             #print(neuron.type)
@@ -80,25 +80,26 @@ def main():
             #glVertex2f(neuron.id[1], neuron.id[2])
         glEnd()
 
-        
-        
+
+
         for neuron in ct.position_dictionary.values():
             axon = neuron.axon
-            axon.axonogenesis()
-            
-            
-            glColor4f(1.0, 0.5, 0.5, 0.4)
-            glBegin(GL_LINES)
+            if axon.axon_head < sv.axon_limit and axon.growing != False:
+                axon.axonogenesis()
+
+
+            glColor4f(1.0, 0.5, 0.5, 0.4) # Colors axons red
+            glLineWidth(0.5) # Sets line thickness for axon
+            glBegin(GL_LINES) # Render axon as a line object
             for section in range(axon.axon_head): # Get the current number of segments in axon
-                
+
                 location = axon.length_array[section] # Gets axons segment location
                 #location[0:+3]
                 glVertex2f(norm(location[2], depth, 0), norm(location[0], width, 0)) # (x, y)
+
             glEnd()
-            # NEEDS to draw each segment of the axon in the length array START HERE
-            #glVertex2f(norm(axon.length_array[axon.axon_head][2], depth, 0)/10,
-            #norm(axon.length_array[axon.axon_head][0], width, 0)/10)
-        
+
+
         # Swap front and back buffers
         glfw.swap_buffers(window)
 

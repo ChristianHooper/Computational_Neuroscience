@@ -1,4 +1,5 @@
 import numpy as np
+from space import Space
 
 # Wave frequencies for neural oscillations.
 wave_frequencies = {'delta':(.5,4),
@@ -51,14 +52,14 @@ genesis_change = np.array([ # [Middle layer, Top, Bottom] [X+, X-, Y+, Y-, Z+, Z
         [0,-1,0], [1,-1,0] # (Y-, X+) Backside
         ],
         [
-        [1,1,1], [1,0,1], [1,-1,1], # Z+,X+ Ascending (corner/front, middle, corner)
-        [1,0,1],[0,0,1],[-1,0,1], # (middle/front, middle, back)
-        [-1,1,1],[-1,0,1],[-1,-1,1], #Z+,X-(front/corner, middle, back corner)
-        ],
-        [
         [1,1,-1], [1,0,-1], [1,-1,-1], # Z+,X+ Ascending (corner/front, middle, corner)
         [1,0,-1],[0,0,-1],[-1,0,-1], # (middle/front, middle, back)
         [-1,1,-1],[-1,0,-1],[-1,-1,-1], #Z+,X-(front/corner, middle, back corner)
+        ],
+        [
+        [1,1,1], [1,0,1], [1,-1,1], # Z+,X+ Ascending (corner/front, middle, corner)
+        [1,0,1],[0,0,1],[-1,0,1], # (middle/front, middle, back)
+        [-1,1,1],[-1,0,1],[-1,-1,1], #Z+,X-(front/corner, middle, back corner)
         ]
         ], dtype=object)
 
@@ -71,9 +72,15 @@ base_colors = {'i': (.60, .60, .60),
         'vi': (.90, .60, .90)
         }
 
-total_neurons = 512
+total_neurons = 5000
 
-morpho_space = (layers['width'],layers['width'], layers['vi'][1]) # X, Y & Z morphological dimensions
+axon_limit = 1500 # THe limit of axonal segments defining it's length
+
+
+morpho_space = (layers['width'] ,layers['width'], layers['vi'][1]+1) # X, Y & Z morphological dimensions
+
+# Populates all possible position for cortical column
+morphological_array = np.empty(morpho_space, dtype=Space)
 
 def normalization(value, min=0, max=1):
         return (2 * ((value - min)/(max - min)) - 1)

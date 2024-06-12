@@ -17,21 +17,30 @@ class Axon(Space):
         self.length_array[0] = id # Sets starting position of axon afixed to neuron
         self.axon_head = 0 # The current length of the axon from base to head
         self.search_bias = self.define_bias() # Defines directional bias for growth
+        self.growing = True # If the axon is currently growing
 
 
     def axonogenesis(self):
-        #print(self.search_bias)
+        # Selects a general cardinal direction based upon layer
         direction = random.choices((0,1,2,3,4,5), weights=self.search_bias)[0]
-        #print("directions: ", direction)
-        #print("UGH:", len(sv.genesis_change[direction]))
-        discrete_direction = random.randint(0, len(sv.genesis_change[direction]) -1)
-        #print("Dd: ", discrete_direction)
-        self.length_array[self.axon_head+1] = self.length_array[self.axon_head] + sv.genesis_change[direction][discrete_direction]
-        self.axon_head = self.axon_head+1
 
-        #print(f"Old: {self.length_array[self.axon_head-1]} New: {self.length_array[self.axon_head]}")
-        
-        #print(directional_selection)
+        # Selects a specific location for growth
+        discrete_direction = random.randint(0, len(sv.genesis_change[direction]) -1)
+
+        # Checks to make sure axon isn't growing outside of the bounds of the morpho-space
+        if np.all(self.length_array[self.axon_head][0:2] < sv.layers['width']-1) and self.length_array[self.axon_head][1] < sv.layers['iv'][1]+1:
+
+            # Increase length of axon array and increase `axon_head` length from soma
+            self.length_array[self.axon_head+1] = self.length_array[self.axon_head] + sv.genesis_change[direction][discrete_direction]
+            self.axon_head = self.axon_head+1
+
+        print('Current: ', *self.length_array[self.axon_head])
+        if sv.morphological_array[*self.length_array[self.axon_head]] == Space or Axon:
+        # Unpacks new axon location and replaces empty space object with that axon
+            print("growth")
+            sv.morphological_array[*self.length_array[self.axon_head]] = self
+        else: print("HIT"); self.growing = False
+
 
     def define_bias(self):
         match self.layer:
