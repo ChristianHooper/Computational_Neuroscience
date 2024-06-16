@@ -82,5 +82,6 @@ morpho_space = (layers['width'] ,layers['width'], layers['vi'][1]+1) # X, Y & Z 
 # Populates all possible position for cortical column
 morphological_array = np.empty(morpho_space, dtype=Space)
 
+
 def normalization(value, min=0, max=1):
         return (2 * ((value - min)/(max - min)) - 1)
