@@ -1,11 +1,20 @@
+import time
 import numpy as np
-from space import Space
+
+
+'''
+Variables in the document do not change, they drive the initialization and behavior of the cortical column.
+'''
 
 WIDTH = 50 # Define the x-axis in micro-meters
 LENGTH = 50 # Define the y-axis in micro-meters
 DEPTH = 1500 # Define the z-axis in micro-meters
 
-LP = np.array([10, 15, 15, 25, 15, 20]) # Layer Percentage out of 100 that defines layer size i-vi
+start_time = 0.0
+def set_time(): global start_time; print("\n| Time start"); start_time = time.perf_counter() # Sets timer when called
+def get_time(): global start_time; print(f"| Time taken: {time.perf_counter() - start_time}\n") # Prints time since timer has been called
+
+LP = np.array([10, 15, 10, 30, 15, 20]) # Layer Percentage out of 100 that defines layer size i-vi
 
 LD = np.array(list(int((sum(LP[:n+1])/sum(LP)) * DEPTH) for n in range(len(LP)))) # Layer Division sets the upper bounds for each layer (Lower < Higher)
 
@@ -19,24 +28,12 @@ layers = {'width': WIDTH, 'length': LENGTH,
         'v':  (LD[3], LD[4]),
         'vi': (LD[4], LD[5])}
 
-print(f"Layers Information: {layers}") # Prints dimension data about the cortical column
-
-
+print(f"Layer Information: {layers}") # Prints dimension data about the cortical column
 
 # Sets X, Y & Z morphological dimensions
-# Extends by one so that zero is not counted as a possible habitable space
+# Morphological Dimensions extends by one so that zero is not counted as a possible habitable space
 MD = (layers['width']+1, layers['length']+1, layers['vi'][1]+1)
 
-
-
-
-# Not adding Space objects to array, adds a None (START HERE)
-# Represents total space in column and the column objects
-morphological_space = np.empty(MD, dtype=Space)
-
-print(morphological_space.shape)
-
-print(morphological_space)
 
 
 
