@@ -25,26 +25,28 @@ def initialize_cortical_column():
     sv.get_time() # Print time morpho-space initialization took
 
     sv.set_time()
-    for neuron in range(sv.TN): # Generates, places, and sorts neurons based upon y-depth
+    for neuron in range(sv.TN): # Generates, place, and sorts neurons based upon y-depth
         duplicate = False
         while not duplicate: # Allows neural generation to re-run if a neuron spawn in a position that is already occupied
 
             # Put all neurons in a 2-d 6 row numpy array, each with their own column (START HERE) Space object, neuron connection??
-            layer_selection =  random.choices([1, 2, 3, 4, 5, 6], weights=sv.SW)[0] # Selects layer for neuron spawn
+            layer_selection = random.choices([1, 2, 3, 4, 5, 6], weights=sv.SW)[0] # Selects layer for neuron spawn
 
             # X, Y, and Z positions on morpho-space for neuron
             position = (random.randint(0, sv.WIDTH), random.randint(0, sv.WIDTH), random.randint(*sv.layers[layer_selection]))
 
             if morpho_space[*position].empty != False: # Generates neuron if neuron doesn't exist in current position
-                soma = Soma(position, layer_selection)
+                soma = Soma(position, layer_selection, sv.color[layer_selection-1])
                 morpho_space[*position] = soma # Adds neuron to cortical column morpho-space
                 neural_array[neuron] = morpho_space[*position] # Adds neuron reference to list of all neuron for quick calling, pass off to np.array
                 break
-            else: duplicate = True; print(f"[Duplicate Neuron Generated]") # If neuron spawn is same position, re-runs generation
+            else:
+                # print(f"[Duplicate Neuron Generated]")
+                duplicate = True # If neuron spawn is same position, re-runs generation
+            duplicate = False
     neural_array.sort()
     print(f"[Neurons Initialized]")
     sv.get_time()
-
 
 
 if __name__ == "__main__":
