@@ -36,7 +36,8 @@ def initialize_cortical_column():
             position = (random.randint(0, sv.WIDTH), random.randint(0, sv.WIDTH), random.randint(*sv.layers[layer_selection]))
 
             if morpho_space[*position].empty != False: # Generates neuron if neuron doesn't exist in current position
-                soma = Soma(position, layer_selection, sv.color[layer_selection-1])
+                
+                soma = Soma(position, layer_selection, sv.color[layer_selection-1], neuron, sv.neuron_type[layer_selection])
                 morpho_space[*position] = soma # Adds neuron to cortical column morpho-space
                 neural_array[neuron] = morpho_space[*position] # Adds neuron reference to list of all neuron for quick calling, pass off to np.array
                 break

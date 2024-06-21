@@ -11,7 +11,8 @@ WIDTH = 50 # Define the x-axis in micro-meters
 LENGTH = 50 # Define the y-axis in micro-meters
 DEPTH = 1500 # Define the z-axis in micro-meters
 
-TN = 5000 # Total neurons initialized in cortical column
+TN = 32 # Total neurons initialized in cortical column
+GL = 512 # Genesis length, how long both axons and dendrites can be by default
 
 LP = np.array([10, 15, 10, 30, 15, 20]) # Layer Percentage out of 100 that defines layer size i-vi
 
@@ -49,6 +50,52 @@ color = np.array([ # Defines the color of neurons based upon their respective la
         [0.5, 1.0, 1.0],
         [1.0, 0.5, 0.5],
         [1.0, 0.5, 1.0]]) # Layer Six
+
+direction_matrix = np.array([
+        [[-1,-1,1], [-1,0, 1], [-1,1, 1], # Descending z-axis
+        [0, -1, 1], [0, 0, 1], [0, 1, 1],
+        [1, -1, 1], [1, 0, 1], [1, 1, 1]],
+
+        [[-1,-1,-1], [-1, 0,-1], [-1,1, -1], # Ascending z-axis
+        [0, -1, -1], [0, 0, -1], [0, 1, -1],
+        [1, -1, -1], [1, 0, -1], [1, 1, -1]],
+
+        [[-1, 1,-1], [-1, 1, 0], [-1, 1, 1], # Ascending x-axis
+        [-1, 0, -1], [-1, 0, 0], [-1, 0, 1],
+        [-1,-1, -1], [-1, -1,0], [-1,-1, 1]],
+
+        [[1, 1,-1], [1, 1, 0], [1, 1, 1], # Descending x-axis
+        [1, 0, -1], [1, 0, 0], [1, 0, 1],
+        [1,-1, -1], [1, -1,0], [1,-1, 1]],
+
+        [[-1,-1,-1], [-1,-1, 0], [-1,-1,1], # Ascending y-axis
+        [0, -1, -1], [0, -1, 0], [0,-1, 1],
+        [1, -1, -1], [1, -1, 0], [1,-1, 1]],
+
+        [[-1,-1,-1], [-1,-1, 0], [-1,-1, 1], # Descending y-axis
+        [0, -1, -1], [0, -1, 0], [0, -1, 1],
+        [1, -1, -1], [1, -1, 0], [1, -1, 1]],
+])
+
+direction_bias = [ # +Z, -Z, -X, +X, -Y, +Y
+        [5, 1, 1, 1, 1, 1], # Layer One
+        [1, 1, 2, 2, 2, 2],
+
+        [1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1],
+
+        [1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1] # Layer Six
+]
+
+neuron_type = {0: [[None]],
+        1: ['interneurons'],
+        2: ['stellate', 'small_pyramidal'],
+        3: ['pyramidal', 'interneurons'],
+        4: ['stellate', 'granule'],
+        5: ['large_pyramidal', 'martinotti'],
+        6: ['fusiform', 'pyramidal', 'interneurons']
+        }
 
 print(f"Layer Information: {layers}") # Prints dimension data about the cortical column
 

@@ -31,7 +31,7 @@ def main():
         glfw.terminate()
         return
 
-    glfw.set_window_pos(window, 256, 0) # Sets screen position
+    glfw.set_window_pos(window, 256, 512) # Sets screen position
     glfw.make_context_current(window) # Make the window's context current
 
     glClearColor(0.0, 0.0, 0.0, 1.0) # Sets base color to black
@@ -48,30 +48,57 @@ def main():
 
     print("//////////[Real-Time Starts]//////////")
 
-    # Loop until the user closes the window
-    while not glfw.window_should_close(window):
+    while not glfw.window_should_close(window): # Render-loop
+        sv.set_time() #Start render timer
         glClear(GL_COLOR_BUFFER_BIT) # Clear screen
+        #glColor3f(1.0, 1.0, 1.0) # Sets color of pixel
 
-        glPointSize(2) # Sets the size of the point when drawn
-        glColor3f(1.0, 1.0, 1.0) # Sets color of pixel
+        #glPointSize(1) # Axons size
+        #glColor4f(0.8, 0.2, 0.2, 0.4) # Axons color
+        #glBegin(GL_POINTS) # Starts axon render
+        #for neuron in ct.neural_array: # Selects each existing neuron
+            # Loops render for each neurons axons current length
+            
+        #glEnd() # Stops neuron render
 
-        glBegin(GL_POINTS) # Starts neuron render
         for neuron in ct.neural_array:
-
+            glPointSize(3) # Sets the size of the point when drawn
+            glBegin(GL_POINTS) # Starts neuron render
             # Applies layer color
             glColor3f(*neuron.color)
-
-
             # Draws neurons position in cortical column, (screen x = column z) & (screen y = column x)
             glVertex2f(sv.normalize(neuron.z, sv.DEPTH, 0) * offset_x, sv.normalize(neuron.x, sv.WIDTH, 0) * offset_y)
+            glEnd()
 
-        glEnd() # Stops neuron render
+            # Renders the axons of the selected neuron
+            glPointSize(1)
+            glBegin(GL_POINTS)
+            for i in range(neuron.axon.head+1):
+                segment = neuron.axon.genesis_array[i]
+
+                # Neural y-axis scaling
+                #neuron.axon.color = [channel * (segment[1] * 0.01) + 0.3 for channel in neuron.axon.color]
+
+                glColor4f(*neuron.axon.color, 0.5)
+
+                glVertex2f(sv.normalize(segment[2], sv.DEPTH, 0) * offset_x, sv.normalize(segment[0], sv.WIDTH, 0) * offset_y)
+            glEnd() # Stops neuron render
+            neuron.axon.growth() # Grows axonal segment by one after axon has rendered
+            
+
+
+
+
+
 
         glfw.swap_buffers(window) # Swap front and back buffers
 
         # Events
         glfw.poll_events()
-        time.sleep(.2)
+        print("[Neuron Render]")
+        sv.get_time() # Times render per cycle
+
+        #time.sleep(.2)
     glfw.terminate()
 
 if __name__ == "__main__":
