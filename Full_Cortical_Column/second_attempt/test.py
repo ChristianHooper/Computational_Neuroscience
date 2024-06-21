@@ -46,4 +46,6 @@ for n in range(10000):
     x = int(9 * random.random())+1
     counted[x][0] = counted[x][0]+1
 
-print(counted)
+
+print(sv.layers[4])
+print(random.getrandbits(9) + sv.layers[4][0])

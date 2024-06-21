@@ -8,14 +8,14 @@ class Genesis(Space):
     def __init__(self, position, layer, reference_position, color):
         super().__init__(position)
         self.empty = False
-        self.layer = layer
-        self.x = position[0]
-        self.y = position[1]
-        self.z = position[2]
+        self.layer = layer # Layer originates form
+        self.x = position[0] # Soma x-position
+        self.y = position[1] # Soma y-position
+        self.z = position[2] # Soma z-position
         self.reference_position = reference_position # Position were neuron reference exist in array
         self.soma = ct.neural_array[self.reference_position] # A reference to the parent soma body
-        self.length = sv.GL
-        self.head = 0
+        self.length = sv.GL # Max length
+        self.head = 0 # Starting length
         self.genesis_array = np.zeros((self.length, 3), dtype=int)
         self.weight = sv.direction_bias[self.layer-1]
         self.growing = True
@@ -26,8 +26,13 @@ class Genesis(Space):
         self.genesis_array[self.head] = position
 
     def growth(self):
-        #print("Out")
-        #print(self.growing == True and self.head < len(self.genesis_array)-1)
+        
+        if self.growing == False:
+            self.genesis_array[self.head] = [0, 0, 0]
+            self.head -= 1
+            if random.getrandbits(4) == 0: self.growing = True
+        #random.getrandbits(9) + sv.layers[4][0] - self.z # Defines where neuron should explore on z-axis
+
         if self.growing == True and self.head < self.length-1:
             #print("In")
             #for n in range(10): print(random.choices([1,2,3,4,5,6], weights=self.weight))
@@ -37,4 +42,6 @@ class Genesis(Space):
             self.head += 1
 
             self.genesis_array[self.head] = growth_direction + self.genesis_array[self.head-1]
+
+            if random.getrandbits(5) == 0: self.growing = False
 

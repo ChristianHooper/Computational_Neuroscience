@@ -49,7 +49,7 @@ def main():
     print("//////////[Real-Time Starts]//////////")
 
     while not glfw.window_should_close(window): # Render-loop
-        sv.set_time() #Start render timer
+        #sv.set_time() #Start render timer
         glClear(GL_COLOR_BUFFER_BIT) # Clear screen
         #glColor3f(1.0, 1.0, 1.0) # Sets color of pixel
 
@@ -71,7 +71,7 @@ def main():
             glEnd()
 
             # Renders the axons of the selected neuron
-            glPointSize(1)
+            glPointSize(2)
             glBegin(GL_POINTS)
             for i in range(neuron.axon.head+1):
                 segment = neuron.axon.genesis_array[i]
@@ -96,8 +96,8 @@ def main():
 
         # Events
         glfw.poll_events()
-        print("[Neuron Render]")
-        sv.get_time() # Times render per cycle
+        #print("[Neuron Render]")
+        #sv.get_time() # Times render per cycle
 
         #time.sleep(.1)
     glfw.terminate()
