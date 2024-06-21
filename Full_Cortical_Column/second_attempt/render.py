@@ -82,6 +82,7 @@ def main():
                 glColor4f(*neuron.axon.color, 0.5)
 
                 glVertex2f(sv.normalize(segment[2], sv.DEPTH, 0) * offset_x, sv.normalize(segment[0], sv.WIDTH, 0) * offset_y)
+                
             glEnd() # Stops neuron render
             neuron.axon.growth() # Grows axonal segment by one after axon has rendered
             
@@ -98,7 +99,7 @@ def main():
         print("[Neuron Render]")
         sv.get_time() # Times render per cycle
 
-        #time.sleep(.2)
+        #time.sleep(.1)
     glfw.terminate()
 
 if __name__ == "__main__":

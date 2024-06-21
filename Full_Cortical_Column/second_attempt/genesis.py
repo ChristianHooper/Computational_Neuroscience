@@ -32,7 +32,7 @@ class Genesis(Space):
             #print("In")
             #for n in range(10): print(random.choices([1,2,3,4,5,6], weights=self.weight))
             # Selects a direction for genesis growth
-            growth_direction = sv.direction_matrix[random.choices([1,2,3,4,5,6], weights=self.weight)[0]-1][(random.getrandbits(3) % 9) + 1]
+            growth_direction = sv.direction_matrix[np.random.choice([0,1,2,3,4,5], p=self.weight)][int(9 * random.random())]
 
             self.head += 1
 

@@ -1,6 +1,6 @@
 import numpy as np
 import project_variables as sv
-import random 
+import random
 #print("HOLD :", sv.normalize(16, 128, 0))
 
 
@@ -18,12 +18,32 @@ two = np.zeros(1000000)
 
 sv.set_time()
 for n in range(len(one)):
-    one[n] = (random.getrandbits(3) % 6) + 1
+    one[n] = int(random.getrandbits(6)/7 % 9)+1 # Slightly bias to one
 sv.get_time()
 
 sv.set_time()
 for n in range(len(two)):
-    one[n] = int(6 * random.random())
+    one[n] = int(9 * random.random())+1
 sv.get_time()
 
-print(sv.direction_matrix.shape)
+# print(sv.direction_matrix.shape)
+
+counted = {
+    0: [0],
+    1: [0],
+    2: [0],
+    3: [0],
+    4: [0],
+    5: [0],
+    6: [0],
+    7: [0],
+    8: [0],
+    9: [0],
+    10:[0]
+}
+
+for n in range(10000):
+    x = int(9 * random.random())+1
+    counted[x][0] = counted[x][0]+1
+
+print(counted)

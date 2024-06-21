@@ -11,8 +11,8 @@ WIDTH = 50 # Define the x-axis in micro-meters
 LENGTH = 50 # Define the y-axis in micro-meters
 DEPTH = 1500 # Define the z-axis in micro-meters
 
-TN = 32 # Total neurons initialized in cortical column
-GL = 512 # Genesis length, how long both axons and dendrites can be by default
+TN = 64 # Total neurons initialized in cortical column
+GL = 1024 # Genesis length, how long both axons and dendrites can be by default
 
 LP = np.array([10, 15, 10, 30, 15, 20]) # Layer Percentage out of 100 that defines layer size i-vi
 
@@ -78,14 +78,14 @@ direction_matrix = np.array([
 ])
 
 direction_bias = [ # +Z, -Z, -X, +X, -Y, +Y
-        [5, 1, 1, 1, 1, 1], # Layer One
-        [1, 1, 2, 2, 2, 2],
+        [0.5, 0.1, 0.1, 0.1, 0.1, 0.1], # Layer One
+        [0.1, 0.1, 0.2, 0.2, 0.2, 0.2], # (START HERE)
 
-        [1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1],
+        [0.1, 0.2, 0.3, 0.2, 0.1, 0.1],
+        [0.1, 0.2, 0.3, 0.2, 0.1, 0.1],
 
-        [1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1] # Layer Six
+        [0.1, 0.2, 0.3, 0.2, 0.1, 0.1],
+        [0.1, 0.2, 0.3, 0.2, 0.1, 0.1] # Layer Six
 ]
 
 neuron_type = {0: [[None]],
