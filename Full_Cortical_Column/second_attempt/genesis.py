@@ -19,7 +19,7 @@ class Genesis(Space):
         self.genesis_array = np.zeros((self.length, 3), dtype=int)
         self.weight = sv.direction_bias[self.layer-1]
         self.growing = True
-        self.color = [0.5, 0.2, 0.2]
+        self.color = [0.4, 0.2, 0.2]
         #self.color[0] = color[0] * 2 # Red tints axon
 
         # Inserts first segment in genesis growth
@@ -27,11 +27,12 @@ class Genesis(Space):
 
     def growth(self):
         
-        if self.growing == False:
+        if self.growing == False and self.head > 1:
             self.genesis_array[self.head] = [0, 0, 0]
             self.head -= 1
             if random.getrandbits(4) == 0: self.growing = True
         #random.getrandbits(9) + sv.layers[4][0] - self.z # Defines where neuron should explore on z-axis
+        else: self.growing = True; 
 
         if self.growing == True and self.head < self.length-1:
             #print("In")
