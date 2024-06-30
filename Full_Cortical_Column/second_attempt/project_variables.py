@@ -11,7 +11,9 @@ WIDTH = 50 # Define the x-axis in micro-meters
 LENGTH = 50 # Define the y-axis in micro-meters
 DEPTH = 1500 # Define the z-axis in micro-meters
 
-TN = 128 # Total neurons initialized in cortical column
+render = True # If the column should render or not
+
+TN = 256 # Total neurons initialized in cortical column
 GL = 1024 # Genesis length, how long both axons and dendrites can be by default
 
 LP = np.array([10, 15, 10, 30, 15, 20]) # Layer Percentage out of 100 that defines layer size i-vi
@@ -79,13 +81,13 @@ direction_matrix = np.array([
 
 direction_bias = [ # +Z, -Z, -X, +X, -Y, +Y
         [0.5, 0.1, 0.1, 0.1, 0.1, 0.1], # Layer One
-        [0.1, 0.1, 0.2, 0.2, 0.2, 0.2], # (START HERE)
+        [0.5, 0.1, 0.1, 0.1, 0.1, 0.1], # Layer Two
+        [0.5, 0.1, 0.1, 0.1, 0.1, 0.1], # Layer Three
 
-        [0.1, 0.2, 0.3, 0.2, 0.1, 0.1],
-        [0.1, 0.2, 0.3, 0.2, 0.1, 0.1],
+        [0.3, 0.3, 0.1, 0.1, 0.1, 0.1], # Layer Four
 
-        [0.1, 0.2, 0.3, 0.2, 0.1, 0.1],
-        [0.1, 0.2, 0.3, 0.2, 0.1, 0.1] # Layer Six
+        [0.1, 0.5, 0.1, 0.1, 0.1, 0.1], # Layer Five
+        [0.1, 0.5, 0.1, 0.1, 0.1, 0.1]  # Layer Six
 ]
 
 neuron_type = {0: [[None]],
@@ -102,15 +104,6 @@ print(f"Layer Information: {layers}") # Prints dimension data about the cortical
 # Sets X, Y & Z morphological dimensions
 # Morphological Dimensions extends by one so that zero is not counted as a possible habitable space
 MD = (layers['width']+1, layers['length']+1, layers[6][1]+1)
-
-
-
-
-
-
-
-
-
 
 # Wave frequencies for neural oscillations.
 wave_frequencies = {'delta':(1,4),

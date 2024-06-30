@@ -6,15 +6,17 @@ from soma import Soma
 
 
 '''
-Initializes cortical column using project variables
+Initializes cortical column using project variables & controls cortical processes.
 '''
 
-morpho_space = np.empty(sv.MD, dtype=object) # Morphological Space represents total space in column and the column objects
+# Morphological Space represents total space in column and the column objects
+morpho_space = np.empty(sv.MD, dtype=object)
 
+# List of all generated neuron object independent of morphological space
 neural_array = np.empty(sv.TN, dtype=object)
-#post_neural_array = np.empty((1, 6), dtype=object) # Six row array to hold neuron references in their layer
 
-def initialize_cortical_column():
+
+def initialize_cortical_column(): # Create the cortical column prior to runtime
 
     sv.set_time() # Sets start of morphological space initialization
     # Places Space object within the entire morphological space
@@ -36,7 +38,7 @@ def initialize_cortical_column():
             position = (random.randint(0, sv.WIDTH), random.randint(0, sv.WIDTH), random.randint(*sv.layers[layer_selection]))
 
             if morpho_space[*position].empty != False: # Generates neuron if neuron doesn't exist in current position
-                
+
                 soma = Soma(position, layer_selection, sv.color[layer_selection-1], neuron, sv.neuron_type[layer_selection])
                 morpho_space[*position] = soma # Adds neuron to cortical column morpho-space
                 neural_array[neuron] = morpho_space[*position] # Adds neuron reference to list of all neuron for quick calling, pass off to np.array
@@ -49,6 +51,10 @@ def initialize_cortical_column():
     print(f"[Neurons Initialized]")
     sv.get_time()
 
+def cortical_functions():
+    for neuron in neural_array: # Call each existing neuron
+        neuron.axon.growth() # Grows axonal segment by one
+        neuron.dendrite.growth() # Grows axonal segment by one
 
 if __name__ == "__main__":
     initialize_cortical_column()
