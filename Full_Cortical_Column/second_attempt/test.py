@@ -1,6 +1,10 @@
 import numpy as np
 import project_variables as sv
 import random
+
+'''
+Used to test features.
+'''
 #print("HOLD :", sv.normalize(16, 128, 0))
 
 

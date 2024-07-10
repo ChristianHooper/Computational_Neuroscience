@@ -74,6 +74,7 @@ def main():
                     glVertex2f(sv.normalize(segment[2], sv.DEPTH, 0) * offset_x, sv.normalize(segment[0], sv.WIDTH, 0) * offset_y)
                 glEnd() # Stops neuron render
 
+
                 # Renders the dendrites of the selected neuron
                 glBegin(GL_POINTS)
                 for i in range(neuron.dendrite.head+1):
